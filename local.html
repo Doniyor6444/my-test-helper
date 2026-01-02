@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Panel</title>
+    <style>
+        body { 
+            margin: 0; padding: 10px; font-family: 'Segoe UI', sans-serif; 
+            background: rgba(255, 255, 255, 0.95); font-size: 12px; 
+            border: 2px solid #2c3e50; height: 180px; overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+        #res { color: #e74c3c; font-weight: bold; font-size: 15px; margin-top: 8px; border-top: 1px solid #ddd; padding-top: 5px; }
+        .info { color: #7f8c8d; font-size: 10px; text-transform: uppercase; }
+        #savol_nomi { font-weight: 600; color: #34495e; height: 40px; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="info">Test aniqlandi:</div>
+    <div id="savol_nomi">Yuklanmoqda...</div>
+    <div id="res">Javob izlanmoqda...</div>
+
+    <script>
+        // 1. URL parametrlarini o'qish
+        const params = new URLSearchParams(window.location.search);
+        const data = params.get('data');
+
+        // 2. SIZNING TEST BAZANGIZ (Shu yerga testlaringizni qo'shasiz)
+        const TEST_BAZASI = [
+            { s: "2+2", j: "4" },
+            { s: "poytaxti", j: "Toshkent" },
+            { s: "backend", j: "Server qismi" }
+        ];
+
+        if (data) {
+            try {
+                const decoded = decodeURIComponent(atob(data));
+                const [savol, variantlar] = decoded.split('[:]');
+                document.getElementById('savol_nomi').innerText = savol;
+
+                // 3. Bazadan qidirish (Kalit so'z bo'yicha)
+                let topildi = TEST_BAZASI.find(item => savol.toLowerCase().includes(item.s.toLowerCase()));
+
+                if (topildi) {
+                    document.getElementById('res').innerHTML = "TO'G'RI JAVOB:<br>" + topildi.j;
+                } else {
+                    document.getElementById('res').innerText = "Bazada topilmadi!";
+                }
+            } catch (e) {
+                document.getElementById('res').innerText = "Kodlashda xato!";
+            }
+        }
+
+        // Ikki marta bosilsa oynani yopish
+        document.body.ondblclick = () => window.close();
+    </script>
+</body>
+</html>
